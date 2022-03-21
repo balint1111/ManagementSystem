@@ -1,7 +1,6 @@
 package com.example.managementsystem.entities;
 
 import com.example.managementsystem.enumeration.UserType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 

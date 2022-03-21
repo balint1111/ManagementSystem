@@ -1,12 +1,10 @@
 package com.example.managementsystem.entities;
 
 import com.example.managementsystem.enumeration.MaintenanceInterval;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name = "tool_category")
 @Data
@@ -30,6 +28,7 @@ public class ToolCategory {
     @JoinColumn(name = "parent_category_id", referencedColumnName = "id")
     private ToolCategory parentCategory;
 
+    @JsonIgnore
     public MaintenanceInterval getMaintenanceIntervalPro() throws Exception {
         if(maintenanceInterval != null){
             return maintenanceInterval;

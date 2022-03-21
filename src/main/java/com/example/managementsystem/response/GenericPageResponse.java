@@ -6,9 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
-/**
- * @author A Nono
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -15,11 +15,15 @@ public class Tool {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "identifier", nullable = false)
+    @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
 
     @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "tool_category_id", nullable = false)
+    private ToolCategory toolCategory;
 
     //TODO: elhelyezkedés
 

@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-/**
- * @author A Nono
- */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor

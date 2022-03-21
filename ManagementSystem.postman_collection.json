@@ -222,7 +222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"name\" : \"testTool\",\n        \"identifier\" : \"tool-0002\",\n        \"description\": \"testTool\"\n    }\n}",
+							"raw": "{\n    \"param\": {\n        \"name\" : \"testTool\",\n        \"identifier\" : \"tool-0002\",\n        \"description\": \"testTool\",\n        \"toolCategory\": {\n            \"id\" : 1\n        }\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -18,8 +18,8 @@ public class SaveService {
 
     public GenericSingleResponse<Tool> service(GenericSingleRequest<Tool> request, GenericSingleResponse<Tool> response) {
         try {
-            Tool Tool = toolService.save(request.getParam());
-            response.setItem(Tool);
+            Tool tool = toolService.save(request.getParam());
+            response.setItem(tool);
             response.setStatus(CommonStatus.OK.toString());
         } catch (Exception e) {
             e.printStackTrace();
