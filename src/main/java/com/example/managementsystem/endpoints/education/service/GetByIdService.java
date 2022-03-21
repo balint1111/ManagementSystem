@@ -7,6 +7,7 @@ import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
 import com.example.managementsystem.response.GenericSingleResponse;
 import com.example.managementsystem.services.EducationService;
+import com.google.common.base.Throwables;
 import org.springframework.stereotype.Service;
 
 @Service("educationGetByIdService")
@@ -18,9 +19,14 @@ public class GetByIdService {
     }
 
     public GenericSingleResponse<Education> service(GenericSingleRequest<Long> request, GenericSingleResponse<Education> response){
-        Education education = educationService.getById(request.getParam());
-        response.setItem(education);
-        response.setStatus(CommonStatus.OK.toString());
+        try {
+            Education education = educationService.getById(request.getParam());
+            response.setItem(education);
+            response.setStatus(CommonStatus.OK.toString());
+        }catch (Exception e) {
+            response.setStatus(CommonStatus.ERROR.toString());
+            response.setCause(Throwables.getRootCause(e).getMessage());
+        }
         return response;
     }
 }

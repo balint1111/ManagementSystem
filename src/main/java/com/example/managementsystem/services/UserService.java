@@ -38,6 +38,14 @@ public class UserService {
         return repository.findByUsernameAndPassword(username, password);
     }
 
+    public User getByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
+    public List<User> getAll() {
+        return repository.findAll();
+    }
+
     public List<User> getAll(String predicateStr) {
         List<User> list;
         try {

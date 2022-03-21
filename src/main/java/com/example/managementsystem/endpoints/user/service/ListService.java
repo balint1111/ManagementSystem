@@ -5,6 +5,7 @@ import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
 import com.example.managementsystem.services.UserService;
+import com.google.common.base.Throwables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,16 @@ public class ListService {
     }
 
     public GenericListResponse<User> service(GenericSingleRequest<String> request, GenericListResponse<User> response) {
+        try {
+            String predicate = request.getParam();
+            List<User> list = userService.getAll(predicate);
 
-        String predicate = request.getParam();
-        List<User> list = userService.getAll(predicate);
-
-        response.setStatus(CommonStatus.OK.toString());
-        response.setItems(list);
-
+            response.setStatus(CommonStatus.OK.toString());
+            response.setItems(list);
+        }catch (Exception e) {
+            response.setStatus(CommonStatus.ERROR.toString());
+            response.setCause(Throwables.getRootCause(e).getMessage());
+        }
         return response;
     }
 }

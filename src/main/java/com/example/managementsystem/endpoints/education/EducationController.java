@@ -42,13 +42,17 @@ public class EducationController extends BaseController {
 
     @GetMapping("/get-by-id")
     private ResponseEntity<GenericSingleResponse<Education>> getByIdService(@RequestParam(name = "id") Long id){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<Education> response = getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 
     @GetMapping("/list-by-tool-category")
     private ResponseEntity<GenericListResponse<Education>> listByToolCategory(@RequestParam(name = "id") Long id){
+        Long start = System.currentTimeMillis();
         GenericListResponse<Education> response = listByToolCategoryService.service(new GenericSingleRequest<Long>(id), new GenericListResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 

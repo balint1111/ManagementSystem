@@ -36,13 +36,17 @@ public class UserController extends BaseController {
 
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<User>> saveService(@RequestBody GenericSingleRequest<User> request){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<User> response = saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 
     @PostMapping("/login")
     private ResponseEntity<GenericSingleResponse<User>> login(@RequestBody GenericSingleRequest<User> request){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<User> response = loginService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 
