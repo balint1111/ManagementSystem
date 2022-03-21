@@ -21,3 +21,10 @@ táblák:
     ToolCategory
     User
   
+Végpontokhoz példa:
+    
+    ManagementSystem.postman_collection.json
+
+Ebből a fájlbl lehet importálni postmanbe
+A fájlban a user táblához és a tool táblához vannak példa requestek.
+A többi táblához is hasonló végpontok vannak mint a toolhoz.
