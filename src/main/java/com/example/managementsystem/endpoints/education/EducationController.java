@@ -35,8 +35,8 @@ public class EducationController extends BaseController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<GenericSingleResponse<User>> saveService(@RequestBody GenericSingleRequest<User> request){
-        GenericSingleResponse<User> response = saveService.service(request, new GenericSingleResponse<>());
+    private ResponseEntity<GenericSingleResponse<Education>> saveService(@RequestBody GenericSingleRequest<Education> request){
+        GenericSingleResponse<Education> response = saveService.service(request, new GenericSingleResponse<>());
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 

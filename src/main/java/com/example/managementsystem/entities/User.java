@@ -2,6 +2,7 @@ package com.example.managementsystem.entities;
 
 import com.example.managementsystem.enumeration.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class User {
     @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false)
     private String password;
 

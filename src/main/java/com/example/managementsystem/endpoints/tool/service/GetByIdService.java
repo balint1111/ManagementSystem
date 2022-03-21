@@ -1,25 +1,25 @@
-package com.example.managementsystem.endpoints.user.service;
+package com.example.managementsystem.endpoints.tool.service;
 
-import com.example.managementsystem.entities.User;
+import com.example.managementsystem.entities.Tool;
 import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericSingleResponse;
-import com.example.managementsystem.services.UserService;
+import com.example.managementsystem.services.ToolService;
 import com.google.common.base.Throwables;
 import org.springframework.stereotype.Service;
 
-@Service("userSaveService")
-public class SaveService {
-    private final UserService userService;
+@Service("toolGetByIdService")
+public class GetByIdService {
+    private final ToolService toolService;
 
-    public SaveService(UserService userService) {
-        this.userService = userService;
+    public GetByIdService(ToolService toolService) {
+        this.toolService = toolService;
     }
 
-    public GenericSingleResponse<User> service(GenericSingleRequest<User> request, GenericSingleResponse<User> response) {
+    public GenericSingleResponse<Tool> service(GenericSingleRequest<Long> request, GenericSingleResponse<Tool> response) {
         try {
-            User user = userService.save(request.getParam());
-            response.setItem(user);
+            Tool Tool = toolService.getById(request.getParam());
+            response.setItem(Tool);
             response.setStatus(CommonStatus.OK.toString());
         } catch (Exception e) {
             e.printStackTrace();

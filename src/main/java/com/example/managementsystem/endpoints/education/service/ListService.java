@@ -1,7 +1,6 @@
 package com.example.managementsystem.endpoints.education.service;
 
 import com.example.managementsystem.entities.Education;
-import com.example.managementsystem.entities.User;
 import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
@@ -29,7 +28,8 @@ public class ListService {
 
             response.setStatus(CommonStatus.OK.toString());
             response.setItems(list);
-        }catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(CommonStatus.ERROR.toString());
             response.setCause(Throwables.getRootCause(e).getMessage());
         }

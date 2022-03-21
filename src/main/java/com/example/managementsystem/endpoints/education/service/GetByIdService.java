@@ -1,10 +1,8 @@
 package com.example.managementsystem.endpoints.education.service;
 
 import com.example.managementsystem.entities.Education;
-import com.example.managementsystem.entities.User;
 import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericSingleRequest;
-import com.example.managementsystem.response.GenericListResponse;
 import com.example.managementsystem.response.GenericSingleResponse;
 import com.example.managementsystem.services.EducationService;
 import com.google.common.base.Throwables;
@@ -18,12 +16,13 @@ public class GetByIdService {
         this.educationService = educationService;
     }
 
-    public GenericSingleResponse<Education> service(GenericSingleRequest<Long> request, GenericSingleResponse<Education> response){
+    public GenericSingleResponse<Education> service(GenericSingleRequest<Long> request, GenericSingleResponse<Education> response) {
         try {
             Education education = educationService.getById(request.getParam());
             response.setItem(education);
             response.setStatus(CommonStatus.OK.toString());
-        }catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(CommonStatus.ERROR.toString());
             response.setCause(Throwables.getRootCause(e).getMessage());
         }

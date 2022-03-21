@@ -1,7 +1,6 @@
 package com.example.managementsystem.endpoints.education.service;
 
 import com.example.managementsystem.entities.Education;
-import com.example.managementsystem.entities.User;
 import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GetAllPageableRequest;
@@ -31,7 +30,8 @@ public class GetPageService {
 
             response.setStatus(CommonStatus.OK.toString());
             response.setPage(page);
-        }catch (Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(CommonStatus.ERROR.toString());
             response.setCause(Throwables.getRootCause(e).getMessage());
         }
