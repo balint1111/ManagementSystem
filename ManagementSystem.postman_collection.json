@@ -445,7 +445,7 @@
 					"response": []
 				},
 				{
-					"name": "localhost:8080/releducationuser/get-by-id?id=1",
+					"name": "localhost:8080/education/list-by-tool-category?id=1",
 					"request": {
 						"method": "GET",
 						"header": [],
