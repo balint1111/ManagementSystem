@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Service("ToolController")
 @RequestMapping("/tool")
 public class ToolController extends BaseController {

@@ -10,13 +10,16 @@ import com.example.managementsystem.response.GenericListResponse;
 import com.example.managementsystem.response.GenericPageResponse;
 import com.example.managementsystem.response.GenericSingleResponse;
 import com.example.managementsystem.system.HttpStatusEvaluate;
+import org.springframework.context.annotation.Role;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Service("educationController")
 @RequestMapping("/education")
 public class EducationController extends BaseController {
@@ -34,6 +37,7 @@ public class EducationController extends BaseController {
         this.listByToolCategoryService = listByToolCategoryService;
     }
 
+    @Secured("ADMIN")
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<Education>> saveService(@RequestBody GenericSingleRequest<Education> request){
         GenericSingleResponse<Education> response = saveService.service(request, new GenericSingleResponse<>());

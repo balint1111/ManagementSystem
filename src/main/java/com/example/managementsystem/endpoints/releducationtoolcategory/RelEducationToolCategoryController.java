@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Service("relEducationToolCategoryController")
 @RequestMapping("/rel-education-tool-category")
 public class RelEducationToolCategoryController extends BaseController {
