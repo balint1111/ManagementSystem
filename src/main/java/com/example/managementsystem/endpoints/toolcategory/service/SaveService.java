@@ -18,8 +18,8 @@ public class SaveService {
 
     public GenericSingleResponse<ToolCategory> service(GenericSingleRequest<ToolCategory> request, GenericSingleResponse<ToolCategory> response) {
         try {
-            ToolCategory ToolCategory = toolCategoryService.save(request.getParam());
-            response.setItem(ToolCategory);
+            ToolCategory toolCategory = toolCategoryService.save(request.getParam());
+            response.setItem(toolCategory);
             response.setStatus(CommonStatus.OK.toString());
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,8 +18,9 @@ public class GetByIdService {
 
     public GenericSingleResponse<ToolCategory> service(GenericSingleRequest<Long> request, GenericSingleResponse<ToolCategory> response) {
         try {
-            ToolCategory ToolCategory = toolCategoryService.getById(request.getParam());
-            response.setItem(ToolCategory);
+            ToolCategory toolCategory = toolCategoryService.getById(request.getParam());
+            toolCategory.setMaintenanceInterval(toolCategory.getMaintenanceIntervalPro());
+            response.setItem(toolCategory);
             response.setStatus(CommonStatus.OK.toString());
         } catch (Exception e) {
             e.printStackTrace();

@@ -30,12 +30,32 @@ public class ToolCategoryService {
         this.relEducationToolCategoryService = relEducationToolCategoryService;
     }
 
-    public ToolCategory save(ToolCategory entity) {
+    public ToolCategory save(ToolCategory entity) throws Exception {
+        validate(entity);
         return repository.save(entity);
     }
 
-    public List<ToolCategory> saveAll(List<ToolCategory> entities) {
+    public List<ToolCategory> saveAll(List<ToolCategory> entities) throws Exception {
+        for (ToolCategory toolCategory : entities) {
+            validate(toolCategory);
+        }
         return repository.saveAll(entities);
+    }
+
+    private boolean validate(ToolCategory entity) throws Exception {
+        if (entity.getMaintenanceInterval() == null) {
+            ToolCategory parent = null;
+            if (entity.getParentCategory() != null && entity.getParentCategory().getId() != null) {
+                parent = getById(entity.getParentCategory().getId());
+            }
+            if (parent == null || parent.getId() == null || parent.getMaintenanceIntervalPro() == null) {
+                throw new Exception("NO_MAINTENANCE_INTERVAL");
+            }
+        }
+        if (entity.getParentCategory() != null && entity.getParentCategory().getId() == null) {
+            entity.setParentCategory(null);
+        }
+        return true;
     }
 
     public ToolCategory getById(Long id) {
@@ -50,7 +70,7 @@ public class ToolCategoryService {
         return relEducationToolCategoryService.listAllByEducationId(educationId).stream().map(RelEducationToolCategory::getToolCategory).collect(Collectors.toList());
     }
 
-    public List<ToolCategory> getAll(String predicateStr) {
+    public List<ToolCategory> getAll(String predicateStr) throws Exception {
         List<ToolCategory> list;
         try {
             if (StringUtils.isEmpty(predicateStr)) {
@@ -59,13 +79,16 @@ public class ToolCategoryService {
             PathBuilder<ToolCategory> pathBuilder = new PathBuilder<>(ToolCategory.class, "toolCategory");
             BooleanExpression predicate = new PredicateBuilder(predicateStr).build(pathBuilder);
             list = Lists.newArrayList(repository.findAll(predicate));
+            for (ToolCategory toolCategory : list) {
+                toolCategory.setMaintenanceInterval(toolCategory.getMaintenanceIntervalPro());
+            }
         } catch (EntityNotFoundException e) {
             return Collections.emptyList();
         }
         return list;
     }
 
-    public RestResponsePage<ToolCategory> getAllPageable(GetAllPageableRequest request) {
+    public RestResponsePage<ToolCategory> getAllPageable(GetAllPageableRequest request) throws Exception {
         Page<ToolCategory> page;
         Pageable pageable;
         try {
@@ -86,9 +109,13 @@ public class ToolCategoryService {
         return convertToPageEntry(page);
     }
 
-    private RestResponsePage<ToolCategory> convertToPageEntry(Page<ToolCategory> page) {
+    private RestResponsePage<ToolCategory> convertToPageEntry(Page<ToolCategory> page) throws Exception {
         if (page != null && page.hasContent()) {
-            return new RestResponsePage<>(page.getContent(), page.getPageable(), page.getTotalElements());
+            List<ToolCategory> list = page.getContent();
+            for (ToolCategory toolCategory : list) {
+                toolCategory.setMaintenanceInterval(toolCategory.getMaintenanceIntervalPro());
+            }
+            return new RestResponsePage<>(list, page.getPageable(), page.getTotalElements());
         } else {
             return new RestResponsePage<>(Collections.emptyList());
         }
