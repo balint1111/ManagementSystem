@@ -37,7 +37,9 @@ public class RelEducationUserController extends BaseController {
 
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<RelEducationUser>> saveService(@RequestBody GenericSingleRequest<RelEducationUser> request){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<RelEducationUser> response = saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 
