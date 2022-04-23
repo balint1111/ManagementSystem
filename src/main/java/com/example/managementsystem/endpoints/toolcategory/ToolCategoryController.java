@@ -38,7 +38,9 @@ public class ToolCategoryController extends BaseController {
 
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<ToolCategory>> saveService(@RequestBody GenericSingleRequest<ToolCategory> request){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<ToolCategory> response = saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 

@@ -40,7 +40,9 @@ public class EducationController extends BaseController {
     @Secured("ADMIN")
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<Education>> saveService(@RequestBody GenericSingleRequest<Education> request){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<Education> response = saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 

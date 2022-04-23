@@ -40,7 +40,9 @@ public class RelEducationToolCategoryController extends BaseController {
 
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<RelEducationToolCategory>> saveService(@RequestBody GenericSingleRequest<RelEducationToolCategory> request){
+        Long start = System.currentTimeMillis();
         GenericSingleResponse<RelEducationToolCategory> response = saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 

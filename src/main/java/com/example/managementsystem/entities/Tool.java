@@ -25,7 +25,8 @@ public class Tool {
     @JoinColumn(name = "tool_category_id", nullable = false)
     private ToolCategory toolCategory;
 
-    //TODO: elhelyezkedés
+    @Column(name = "location")
+    private String location;
 
 
 }

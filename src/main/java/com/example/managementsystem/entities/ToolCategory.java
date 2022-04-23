@@ -21,6 +21,9 @@ public class ToolCategory {
     @Column(name = "maintenance_interval")
     private MaintenanceInterval maintenanceInterval;
 
+    @Column(name = "maintenance_description")
+    private MaintenanceInterval maintenanceDescription;
+
     @Column(name = "description")
     private String description;
 
