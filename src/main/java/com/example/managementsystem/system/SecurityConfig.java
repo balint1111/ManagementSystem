@@ -7,6 +7,7 @@ import com.example.managementsystem.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,9 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic();
         http.logout().logoutUrl("/user/logout").logoutSuccessHandler((request, response, authentication) -> {
+            response.setStatus(401);
             response.setContentType("application/json");
-            response.getWriter().print(GlobalGson.get().getGson().toJson(new BaseRestResponse(CommonStatus.OK.toString(), null)));
-        });
+            response.getWriter().print(GlobalGson.get().getGson().toJson(new BaseRestResponse(CommonStatus.UNAUTHORIZED.toString(), null)));
+        }).invalidateHttpSession(true).deleteCookies();
     }
 
     @Bean
