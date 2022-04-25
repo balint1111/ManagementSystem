@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public enum MaintenanceInterval {
-    WEEK,
-    MONTH,
-    QUARTER,
-    HALF_YEAR,
-    YEAR;
+public enum IssueSeverity {
+    LOW,
+    NORMAL,
+    HIGH;
 
     private String name;
 }

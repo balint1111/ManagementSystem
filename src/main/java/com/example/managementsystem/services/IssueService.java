@@ -51,12 +51,14 @@ public class IssueService {
         return newIssue;
     }
 
-    private void issueLogging(Issue newIssue, IssueStatus oldStatus, Long oldResponsibleUserId){
-        if (oldStatus != null && oldStatus.toString() != newIssue.getStatus().toString()) {
-            issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Status changed to " + newIssue.getStatus().toString()));
+    private void issueLogging(Issue newIssue, IssueStatus oldStatus, Long oldResponsibleUserId) {
+        if (oldStatus == null || (oldStatus != null && oldStatus.toString() != newIssue.getStatus().toString())) {
+            if (newIssue.getStatus() != null)
+                issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Status changed to " + newIssue.getStatus().toString()));
         }
-        if (oldResponsibleUserId != null && !oldResponsibleUserId.equals(newIssue.getResponsibleUser().getId())) {
-            issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Responsible user changed to " + newIssue.getResponsibleUser().getUsername()));
+        if (oldResponsibleUserId == null || (oldResponsibleUserId != null && !oldResponsibleUserId.equals(newIssue.getResponsibleUser().getId()))) {
+            if (newIssue.getResponsibleUser() != null && newIssue.getResponsibleUser().getUsername() != null)
+                issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Responsible user changed to " + newIssue.getResponsibleUser().getUsername()));
         }
     }
 
@@ -65,9 +67,12 @@ public class IssueService {
     }
 
 
-
     public Issue getById(Long id) {
         return repository.findById(id).orElse(null);
+    }
+
+    public Issue getLastByTool(Long toolId) {
+        return repository.findFirstByTool_IdOrderByDateTimeDesc(toolId).orElse(null);
     }
 
     public List<Issue> listAll() {
