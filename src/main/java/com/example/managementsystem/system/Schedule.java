@@ -30,7 +30,7 @@ public class Schedule {
     }
 
     @SneakyThrows
-    @Scheduled(cron = "*/5 * * * * *", zone = "Europe/Budapest")
+    @Scheduled(cron = "0 */15 * * * *", zone = "Europe/Budapest")
     public void scheduledIssue() {
         log.info("IssueScheduled");
 
