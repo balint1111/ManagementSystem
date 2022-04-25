@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
@@ -35,30 +36,52 @@ public class IssueService {
 
     @Transactional
     public Issue save(Issue entity) {
-        Issue oldIssue = null;
-        IssueStatus oldStatus = null;
-        Long oldResponsibleUserId = null;
-        if (entity.getId() != null) {
-            oldIssue = repository.findById(entity.getId()).get();
-            if (oldIssue != null) {
-                oldStatus = oldIssue.getStatus();
-                oldResponsibleUserId = oldIssue.getResponsibleUser() != null ? oldIssue.getResponsibleUser().getId() : null;
-            }
-        }
-        Issue newIssue = repository.save(entity);
-        issueLogging(newIssue, oldStatus, oldResponsibleUserId);
+        return save(entity, null);
+    }
+
+    @Transactional
+    public Issue updateStatus(Long issueId, IssueStatus newStatus, String justification) {
+        Issue oldIssue = getById(issueId);
+        String oldStatus = oldIssue.getStatus().toString();
+        oldIssue.setStatus(newStatus);
+
+        Issue newIssue = repository.save(oldIssue);
+        issueLogging(newIssue, oldStatus, null, justification);
 
         return newIssue;
     }
 
-    private void issueLogging(Issue newIssue, IssueStatus oldStatus, Long oldResponsibleUserId) {
-        if (oldStatus == null || (oldStatus != null && oldStatus.toString() != newIssue.getStatus().toString())) {
-            if (newIssue.getStatus() != null)
-                issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Status changed to " + newIssue.getStatus().toString()));
+    @Transactional
+    public Issue save(Issue entity, String justification) {
+        Issue oldIssue = null;
+        String oldStatus = null;
+        Long oldResponsibleUserId = null;
+        if (entity.getId() != null) {
+            oldIssue = getById(entity.getId());
+            System.out.println(oldIssue);
+            if (oldIssue != null) {
+                oldStatus = oldIssue.getStatus().toString();
+                System.out.println(oldStatus);
+                oldResponsibleUserId = oldIssue.getResponsibleUser() != null ? oldIssue.getResponsibleUser().getId() : null;
+            }
+        }
+        Issue newIssue = repository.save(entity);
+        issueLogging(newIssue, oldStatus, oldResponsibleUserId, justification);
+
+        return newIssue;
+    }
+
+    private void issueLogging(Issue newIssue, String oldStatus, Long oldResponsibleUserId, String justification) {
+        if (oldStatus == null || !oldStatus.toString().equals(newIssue.getStatus().toString())) {
+            if (newIssue.getStatus() != null) {
+                issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Status changed to " + newIssue.getStatus().toString(), justification));
+                System.out.println(newIssue.getStatus());
+            }
+
         }
         if (oldResponsibleUserId == null || (oldResponsibleUserId != null && !oldResponsibleUserId.equals(newIssue.getResponsibleUser().getId()))) {
             if (newIssue.getResponsibleUser() != null && newIssue.getResponsibleUser().getUsername() != null)
-                issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Responsible user changed to " + newIssue.getResponsibleUser().getUsername()));
+                issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Responsible user changed to " + newIssue.getResponsibleUser().getUsername(), justification));
         }
     }
 

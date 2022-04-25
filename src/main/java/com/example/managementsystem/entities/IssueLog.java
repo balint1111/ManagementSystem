@@ -24,12 +24,16 @@ public class IssueLog {
     @Column(name = "description", updatable = false)
     private String description;
 
+    @Column(name = "justification", updatable = false)
+    private String justification;
+
     @Column(name = "created_on", nullable = false, updatable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Instant createdOn = Instant.now();
 
-    public IssueLog(Long id, Long issueId, String description) {
+    public IssueLog(Long id, Long issueId, String description, String justification) {
         this.id = id;
         this.issueId = issueId;
         this.description = description;
+        this.justification = justification;
     }
 }

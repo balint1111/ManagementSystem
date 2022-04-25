@@ -18,8 +18,8 @@ public class GetByIdService {
 
     public GenericSingleResponse<Issue> service(GenericSingleRequest<Long> request, GenericSingleResponse<Issue> response) {
         try {
-            Issue Issue = issueService.getById(request.getParam());
-            response.setItem(Issue);
+            Issue issue = issueService.getById(request.getParam());
+            response.setItem(issue);
             response.setStatus(CommonStatus.OK.toString());
         } catch (Exception e) {
             e.printStackTrace();
