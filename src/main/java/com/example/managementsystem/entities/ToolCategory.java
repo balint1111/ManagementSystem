@@ -22,7 +22,10 @@ public class ToolCategory {
     private MaintenanceInterval maintenanceInterval;
 
     @Column(name = "maintenance_description")
-    private MaintenanceInterval maintenanceDescription;
+    private String maintenanceDescription;
+
+    @Column(name = "maintenance_estimated_time")
+    private Integer maintenanceEstimatedTime;
 
     @Column(name = "description")
     private String description;
