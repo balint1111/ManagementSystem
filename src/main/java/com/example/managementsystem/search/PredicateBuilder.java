@@ -49,7 +49,6 @@ public class PredicateBuilder {
                 result = result.and(predicate);
             }
         }
-        System.out.println(result);
         return result;
     }
 }

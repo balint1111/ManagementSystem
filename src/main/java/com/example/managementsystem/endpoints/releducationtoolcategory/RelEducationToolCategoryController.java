@@ -9,6 +9,7 @@ import com.example.managementsystem.endpoints.releducationtoolcategory.service.S
 import com.example.managementsystem.entities.Education;
 import com.example.managementsystem.entities.RelEducationToolCategory;
 import com.example.managementsystem.entities.User;
+import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
@@ -41,7 +42,8 @@ public class RelEducationToolCategoryController extends BaseController {
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<RelEducationToolCategory>> saveService(@RequestBody GenericSingleRequest<RelEducationToolCategory> request){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<RelEducationToolCategory> response = saveService.service(request, new GenericSingleResponse<>());
+        GenericSingleResponse<RelEducationToolCategory> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : saveService.service(request, new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -49,7 +51,8 @@ public class RelEducationToolCategoryController extends BaseController {
     @GetMapping("/get-by-id")
     private ResponseEntity<GenericSingleResponse<RelEducationToolCategory>> getByIdService(@RequestParam(name = "id") Long id){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<RelEducationToolCategory> response = getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
+        GenericSingleResponse<RelEducationToolCategory> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -58,7 +61,8 @@ public class RelEducationToolCategoryController extends BaseController {
     public ResponseEntity<GenericPageResponse<RelEducationToolCategory>> pageService(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                                                                       @RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericPageResponse<RelEducationToolCategory> response = getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
+        GenericPageResponse<RelEducationToolCategory> response = !hasAnyAuthorities() ? 
+                new GenericPageResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -66,7 +70,8 @@ public class RelEducationToolCategoryController extends BaseController {
     @GetMapping("/list")
     public ResponseEntity<GenericListResponse<RelEducationToolCategory>> listService(@RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericListResponse<RelEducationToolCategory> response = listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
+        GenericListResponse<RelEducationToolCategory> response = !hasAnyAuthorities() ? 
+                new GenericListResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }

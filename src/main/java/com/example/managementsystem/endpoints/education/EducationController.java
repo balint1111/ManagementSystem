@@ -4,6 +4,7 @@ import com.example.managementsystem.endpoints.BaseController;
 import com.example.managementsystem.endpoints.education.service.*;
 import com.example.managementsystem.entities.Education;
 import com.example.managementsystem.entities.User;
+import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
@@ -41,7 +42,8 @@ public class EducationController extends BaseController {
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<Education>> saveService(@RequestBody GenericSingleRequest<Education> request){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<Education> response = saveService.service(request, new GenericSingleResponse<>());
+        GenericSingleResponse<Education> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : saveService.service(request, new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -49,7 +51,8 @@ public class EducationController extends BaseController {
     @GetMapping("/get-by-id")
     private ResponseEntity<GenericSingleResponse<Education>> getByIdService(@RequestParam(name = "id") Long id){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<Education> response = getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
+        GenericSingleResponse<Education> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -57,7 +60,8 @@ public class EducationController extends BaseController {
     @GetMapping("/list-by-tool-category")
     private ResponseEntity<GenericListResponse<Education>> listByToolCategory(@RequestParam(name = "id") Long id){
         Long start = System.currentTimeMillis();
-        GenericListResponse<Education> response = listByToolCategoryService.service(new GenericSingleRequest<Long>(id), new GenericListResponse<>());
+        GenericListResponse<Education> response = !hasAnyAuthorities() ? 
+                new GenericListResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : listByToolCategoryService.service(new GenericSingleRequest<Long>(id), new GenericListResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -66,7 +70,8 @@ public class EducationController extends BaseController {
     public ResponseEntity<GenericPageResponse<Education>> pageService(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                                                                         @RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericPageResponse<Education> response = getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
+        GenericPageResponse<Education> response = !hasAnyAuthorities() ? 
+                new GenericPageResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -74,7 +79,8 @@ public class EducationController extends BaseController {
     @GetMapping("/list")
     public ResponseEntity<GenericListResponse<Education>> listService(@RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericListResponse<Education> response = listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
+        GenericListResponse<Education> response = !hasAnyAuthorities() ? 
+                new GenericListResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }

@@ -9,4 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GenericSingleResponse<T> extends BaseRestResponse {
     private T item;
+
+    public GenericSingleResponse(String status, String cause, T item) {
+        super(status, cause);
+        this.item = item;
+    }
 }

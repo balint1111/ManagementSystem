@@ -12,4 +12,9 @@ import org.springframework.data.domain.Page;
 @EqualsAndHashCode(callSuper = false)
 public class GenericPageResponse<T> extends BaseRestResponse {
     private Page<T> page;
+
+    public GenericPageResponse(String status, String cause, Page<T> page) {
+        super(status, cause);
+        this.page = page;
+    }
 }

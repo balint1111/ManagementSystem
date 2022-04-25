@@ -7,6 +7,7 @@ import com.example.managementsystem.endpoints.releducationuser.service.GetPageSe
 import com.example.managementsystem.endpoints.releducationuser.service.ListService;
 import com.example.managementsystem.endpoints.releducationuser.service.SaveService;
 import com.example.managementsystem.entities.RelEducationUser;
+import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
@@ -39,7 +40,8 @@ public class RelEducationUserController extends BaseController {
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<RelEducationUser>> saveService(@RequestBody GenericSingleRequest<RelEducationUser> request){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<RelEducationUser> response = saveService.service(request, new GenericSingleResponse<>());
+        GenericSingleResponse<RelEducationUser> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : saveService.service(request, new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -47,7 +49,8 @@ public class RelEducationUserController extends BaseController {
     @GetMapping("/get-by-id")
     private ResponseEntity<GenericSingleResponse<RelEducationUser>> getByIdService(@RequestParam(name = "id") Long id){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<RelEducationUser> response = getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
+        GenericSingleResponse<RelEducationUser> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -56,7 +59,8 @@ public class RelEducationUserController extends BaseController {
     public ResponseEntity<GenericPageResponse<RelEducationUser>> pageService(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                                                                       @RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericPageResponse<RelEducationUser> response = getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
+        GenericPageResponse<RelEducationUser> response = !hasAnyAuthorities() ? 
+                new GenericPageResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -64,7 +68,8 @@ public class RelEducationUserController extends BaseController {
     @GetMapping("/list")
     public ResponseEntity<GenericListResponse<RelEducationUser>> listService(@RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericListResponse<RelEducationUser> response = listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
+        GenericListResponse<RelEducationUser> response = !hasAnyAuthorities() ? 
+                new GenericListResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
