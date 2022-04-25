@@ -2,14 +2,12 @@ package com.example.managementsystem.endpoints.issue;
 
 
 import com.example.managementsystem.endpoints.BaseController;
-import com.example.managementsystem.endpoints.issue.service.GetByIdService;
-import com.example.managementsystem.endpoints.issue.service.GetPageService;
-import com.example.managementsystem.endpoints.issue.service.ListService;
-import com.example.managementsystem.endpoints.issue.service.SaveService;
+import com.example.managementsystem.endpoints.issue.service.*;
 import com.example.managementsystem.entities.Issue;
 import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GenericSingleRequest;
+import com.example.managementsystem.request.issue.IssueUpdateStatusRequest;
 import com.example.managementsystem.response.GenericListResponse;
 import com.example.managementsystem.response.GenericPageResponse;
 import com.example.managementsystem.response.GenericSingleResponse;
@@ -28,12 +26,14 @@ public class IssueController extends BaseController {
     private final SaveService saveService;
     private final GetPageService getPageService;
     private final ListService listService;
+    private final UpdateStatusService updateStatusService;
 
-    public IssueController(GetByIdService getByIdService, SaveService saveService, GetPageService getPageService, ListService listService) {
+    public IssueController(GetByIdService getByIdService, SaveService saveService, GetPageService getPageService, ListService listService, UpdateStatusService updateStatusService) {
         this.getByIdService = getByIdService;
         this.saveService = saveService;
         this.getPageService = getPageService;
         this.listService = listService;
+        this.updateStatusService = updateStatusService;
     }
 
     @PostMapping("/save")
@@ -41,6 +41,14 @@ public class IssueController extends BaseController {
         Long start = System.currentTimeMillis();
         GenericSingleResponse<Issue> response = !hasAnyAuthorities() ? 
                 new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
+        return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
+    }
+
+    @PostMapping("/update-status")
+    private ResponseEntity<GenericSingleResponse<Issue>> updateStatusService(@RequestBody IssueUpdateStatusRequest request){
+        Long start = System.currentTimeMillis();
+        GenericSingleResponse<Issue> response = updateStatusService.service(request, new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
