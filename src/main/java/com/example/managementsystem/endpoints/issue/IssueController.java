@@ -7,6 +7,7 @@ import com.example.managementsystem.endpoints.issue.service.GetPageService;
 import com.example.managementsystem.endpoints.issue.service.ListService;
 import com.example.managementsystem.endpoints.issue.service.SaveService;
 import com.example.managementsystem.entities.Issue;
+import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
@@ -38,7 +39,8 @@ public class IssueController extends BaseController {
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<Issue>> saveService(@RequestBody GenericSingleRequest<Issue> request){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<Issue> response = saveService.service(request, new GenericSingleResponse<>());
+        GenericSingleResponse<Issue> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : saveService.service(request, new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -46,7 +48,8 @@ public class IssueController extends BaseController {
     @GetMapping("/get-by-id")
     private ResponseEntity<GenericSingleResponse<Issue>> getByIdService(@RequestParam(name = "id") Long id){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<Issue> response = getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
+        GenericSingleResponse<Issue> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -55,7 +58,8 @@ public class IssueController extends BaseController {
     public ResponseEntity<GenericPageResponse<Issue>> pageService(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                                                                       @RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericPageResponse<Issue> response = getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
+        GenericPageResponse<Issue> response = !hasAnyAuthorities() ? 
+                new GenericPageResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -63,7 +67,8 @@ public class IssueController extends BaseController {
     @GetMapping("/list")
     public ResponseEntity<GenericListResponse<Issue>> listService(@RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericListResponse<Issue> response = listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
+        GenericListResponse<Issue> response = !hasAnyAuthorities() ? 
+                new GenericListResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
