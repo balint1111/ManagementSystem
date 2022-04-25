@@ -30,10 +30,15 @@ public class IssueLog {
     @Column(name = "created_on", nullable = false, updatable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Instant createdOn = Instant.now();
 
-    public IssueLog(Long id, Long issueId, String description, String justification) {
+    @ManyToOne
+    @JoinColumn(name = "created_by", updatable = false, referencedColumnName = "id")
+    private User createdBy;
+
+    public IssueLog(Long id, Long issueId, String description, String justification, User createdBy) {
         this.id = id;
         this.issueId = issueId;
         this.description = description;
         this.justification = justification;
+        this.createdBy = createdBy;
     }
 }

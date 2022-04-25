@@ -48,7 +48,8 @@ public class IssueController extends BaseController {
     @PostMapping("/update-status")
     private ResponseEntity<GenericSingleResponse<Issue>> updateStatusService(@RequestBody IssueUpdateStatusRequest request){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<Issue> response = updateStatusService.service(request, new GenericSingleResponse<>());
+        GenericSingleResponse<Issue> response = !hasAnyAuthorities() ?
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : updateStatusService.service(request, new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }

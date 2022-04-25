@@ -2,6 +2,7 @@ package com.example.managementsystem.endpoints;
 
 import com.example.managementsystem.entities.User;
 import com.example.managementsystem.enumeration.UserType;
+import com.example.managementsystem.services.AuthService;
 import com.example.managementsystem.services.UserService;
 import com.example.managementsystem.system.IAuthenticationFacade;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class BaseController {
+
+
 
     public BaseController() {
     }
@@ -40,32 +43,14 @@ public class BaseController {
     }
 
     @Autowired
-    private IAuthenticationFacade authenticationFacade;
-
-    @Autowired
-    private UserService userService;
-    
+    private AuthService authService;
 
     protected User getCurrentUser() {
-        Authentication authentication = authenticationFacade.getAuthentication();
-        return userService.getByUsername(authentication.getName());
+        return authService.getCurrentUser();
     }
 
     protected boolean hasAnyAuthorities(UserType... authorities) {
-        if (authorities.length == 0) {
-            return true;
-        }
-        Authentication authentication = authenticationFacade.getAuthentication();
-        if (authentication == null) {
-            return false;
-        }
-        List<String> userAuthorities = authentication.getAuthorities().stream().map(GrantedAuthority::toString).collect(Collectors.toList());
-        for (UserType authority : authorities) {
-            if (userAuthorities.contains(authority.toString())) {
-                return true;
-            }
-        }
-        return false;
+        return authService.hasAnyAuthorities(authorities);
     }
 
     
