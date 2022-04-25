@@ -59,10 +59,8 @@ public class IssueService {
         Long oldResponsibleUserId = null;
         if (entity.getId() != null) {
             oldIssue = getById(entity.getId());
-            System.out.println(oldIssue);
             if (oldIssue != null) {
                 oldStatus = oldIssue.getStatus().toString();
-                System.out.println(oldStatus);
                 oldResponsibleUserId = oldIssue.getResponsibleUser() != null ? oldIssue.getResponsibleUser().getId() : null;
             }
         }
