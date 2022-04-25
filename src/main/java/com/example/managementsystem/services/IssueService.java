@@ -58,10 +58,8 @@ public class IssueService {
         Long oldResponsibleUserId = null;
         if (entity.getId() != null) {
             oldIssue = getById(entity.getId());
-            System.out.println(oldIssue);
             if (oldIssue != null) {
                 oldStatus = oldIssue.getStatus().toString();
-                System.out.println(oldStatus);
                 oldResponsibleUserId = oldIssue.getResponsibleUser() != null ? oldIssue.getResponsibleUser().getId() : null;
             }
         }
@@ -75,7 +73,6 @@ public class IssueService {
         if (oldStatus == null || !oldStatus.toString().equals(newIssue.getStatus().toString())) {
             if (newIssue.getStatus() != null) {
                 issueLogRepository.save(new IssueLog(null, newIssue.getId(), "Status changed to " + newIssue.getStatus().toString(), justification));
-                System.out.println(newIssue.getStatus());
             }
 
         }
