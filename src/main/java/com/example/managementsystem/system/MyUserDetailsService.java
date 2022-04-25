@@ -25,6 +25,6 @@ public class MyUserDetailsService implements UserDetailsService {
     public User loadUserByUsername(String username) {
         com.example.managementsystem.entities.User dbUser = userService.getByUsername(username);
         log.info("authenticating: " + username);
-        return new User(dbUser.getUsername(), passwordEncoder.encode(dbUser.getPassword()), Arrays.asList(new SimpleGrantedAuthority(dbUser.getUserType().toString())));
+        return new User(dbUser.getUsername(), dbUser.getPassword(), Arrays.asList(new SimpleGrantedAuthority(dbUser.getUserType().toString())));
     }
 }

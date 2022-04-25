@@ -7,6 +7,7 @@ import com.example.managementsystem.endpoints.tool.service.GetPageService;
 import com.example.managementsystem.endpoints.tool.service.ListService;
 import com.example.managementsystem.endpoints.tool.service.SaveService;
 import com.example.managementsystem.entities.Tool;
+import com.example.managementsystem.enumeration.CommonStatus;
 import com.example.managementsystem.request.GenericPageRequest;
 import com.example.managementsystem.request.GenericSingleRequest;
 import com.example.managementsystem.response.GenericListResponse;
@@ -38,14 +39,18 @@ public class ToolController extends BaseController {
 
     @PostMapping("/save")
     private ResponseEntity<GenericSingleResponse<Tool>> saveService(@RequestBody GenericSingleRequest<Tool> request){
-        GenericSingleResponse<Tool> response = saveService.service(request, new GenericSingleResponse<>());
+        Long start = System.currentTimeMillis();
+        GenericSingleResponse<Tool> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : saveService.service(request, new GenericSingleResponse<>());
+        endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
 
     @GetMapping("/get-by-id")
     private ResponseEntity<GenericSingleResponse<Tool>> getByIdService(@RequestParam(name = "id") Long id){
         Long start = System.currentTimeMillis();
-        GenericSingleResponse<Tool> response = getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
+        GenericSingleResponse<Tool> response = !hasAnyAuthorities() ? 
+                new GenericSingleResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getByIdService.service(new GenericSingleRequest<Long>(id), new GenericSingleResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -54,7 +59,8 @@ public class ToolController extends BaseController {
     public ResponseEntity<GenericPageResponse<Tool>> pageService(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                                                                       @RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericPageResponse<Tool> response = getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
+        GenericPageResponse<Tool> response = !hasAnyAuthorities() ? 
+                new GenericPageResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : getPageService.service(new GenericPageRequest<>(pageable, search), new GenericPageResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
@@ -62,7 +68,8 @@ public class ToolController extends BaseController {
     @GetMapping("/list")
     public ResponseEntity<GenericListResponse<Tool>> listService(@RequestParam(required = false, defaultValue = "", name = "search") String search) {
         Long start = System.currentTimeMillis();
-        GenericListResponse<Tool> response = listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
+        GenericListResponse<Tool> response = !hasAnyAuthorities() ? 
+                new GenericListResponse<>(CommonStatus.FORBIDDEN.toString(), null, null) : listService.service(new GenericSingleRequest<>(search), new GenericListResponse<>());
         endpointLogging(start);
         return new ResponseEntity<>(response, HttpStatusEvaluate.evaluate(response));
     }
