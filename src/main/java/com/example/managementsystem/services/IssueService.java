@@ -53,6 +53,9 @@ public class IssueService {
 
     @Transactional
     public Issue save(Issue entity, String justification) {
+        if (entity.getResponsibleUser() != null && entity.getResponsibleUser().getId() == null) {
+            entity.setResponsibleUser(null);
+        }
         Issue oldIssue = null;
         String oldStatus = null;
         Long oldResponsibleUserId = null;
