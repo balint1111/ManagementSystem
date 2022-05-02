@@ -136,6 +136,37 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "localhost:8080/user/logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -608,10 +639,13 @@
 				{
 					"name": "localhost:8080/tool-category/get-by-id?id=1",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/tool-category/get-by-id?id=2",
+							"raw": "localhost:8080/tool-category/get-by-id?id=1",
 							"host": [
 								"localhost"
 							],
@@ -623,36 +657,8 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "1"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "localhost:8080/tool-category/save",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"param\": {\n        \"category\" : \"testCategory\",\n        \"maintenanceInterval\" : \"WEEK\",\n        \"description\": \"testCategory\",\n        \"parentCategory\": {\n            \"id\" : 1\n        }\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/tool-category/save",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"tool-category",
-								"save"
 							]
 						}
 					},
@@ -704,7 +710,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/tool-category/pageable?size=5&page=0&search=",
+							"raw": "localhost:8080/tool-category/pageable?size=5&page=&search=",
 							"host": [
 								"localhost"
 							],
@@ -720,12 +726,40 @@
 								},
 								{
 									"key": "page",
-									"value": "0"
+									"value": ""
 								},
 								{
 									"key": "search",
 									"value": ""
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/tool-category/save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"category\" : \"testCategory\",\n        \"maintenanceInterval\" : \"WEEK\",\n        \"description\": \"testCategory\",\n        \"parentCategory\": {\n            \"id\" : 1\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/tool-category/save",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tool-category",
+								"save"
 							]
 						}
 					},
@@ -852,6 +886,165 @@
 								{
 									"key": "page",
 									"value": "0"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "issue",
+			"item": [
+				{
+					"name": "localhost:8080/issue/get-by-id?id=1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/issue/get-by-id?id=4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"issue",
+								"get-by-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/issue/save",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"param\": {\n        \"id\": 1,\n        \"tool\": {\n            \"id\": 1,\n            \"name\": \"testTool\",\n            \"identifier\": \"tool-0001\",\n            \"description\": \"testTool\",\n            \"toolCategory\": {\n                \"id\": 1,\n                \"category\": \"testCategory\",\n                \"maintenanceInterval\": \"WEEK\",\n                \"maintenanceDescription\": null,\n                \"description\": \"description\",\n                \"parentCategory\": null\n            },\n            \"location\": null\n        },\n        \"responsibleUser\": {\n            \"id\" : 2\n        },\n        \"dateTime\": \"2022-01-01T00:00:00Z\",\n        \"estimatedTime\": 8,\n        \"title\": \"TESZT FELADAT\",\n        \"severity\": null,\n        \"type\": null,\n        \"status\": \"SCHEDULED\",\n        \"description\": null\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/issue/save",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"issue",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/issue/update-status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"newStatus\" : \"ACCEPTED\",\n    \"issueId\" : 1,\n    \"justification\" : \"azért mert ezt mondtam\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/issue/update-status",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"issue",
+								"update-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/issue/list?search=",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/issue/list?search=",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"issue",
+								"list"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/issue/pageable?size=5&page=0&search=",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/tool-category/pageable?size=5&page=&search=",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tool-category",
+								"pageable"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": ""
 								},
 								{
 									"key": "search",
